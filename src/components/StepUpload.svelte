@@ -33,13 +33,16 @@
   }
 </script>
 
-<Dropzone 
-  on:drop={handleFilesSelect}
-  multiple={false}
-  accept={'application/pdf'}
->
+{#if files.accepted.length === 0}
+  <Dropzone 
+    on:drop={handleFilesSelect}
+    multiple={false}
+    accept={'application/pdf'}
+  >
     Arrastra y suelta aquí tu PDF
-</Dropzone>
+  </Dropzone>
+{/if}
+
 <ol>
   {#each files.accepted as item}
     <li>{item.name}</li>
