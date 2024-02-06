@@ -1,16 +1,19 @@
 <script>
   import { Alert } from 'flowbite-svelte'
   import { APP_STATUS, appStatus } from '../store.ts'
+  import StepUpload from './StepUpload.svelte'
+  import StepLoading from './StepLoading.svelte'
+  import StepChat from './StepChat.svelte'
 </script>
 
 {#if $appStatus === APP_STATUS.INIT}
-  <p>La página incial</p>
+  <StepUpload />
 
 {:else if $appStatus === APP_STATUS.LOADING}
-  <p>Loading...</p>
+  <StepLoading />
 
 {:else if $appStatus === APP_STATUS.CHAT_MODE}
-  <p>Chatting</p>
+  <StepChat />
 
 {:else if $appStatus === APP_STATUS.ERROR}
   <Alert>
