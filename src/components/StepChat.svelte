@@ -21,13 +21,13 @@
 
 <div class="grid grid-cols-4 gap-2">
   {#each images as image}
-    <img src={image} alt="PDF page" class="rounded-xl w-full h-auto">
+    <img src={image} alt="PDF page" class="rounded-xl w-full h-auto aspect-[400/540]">
   {/each}
 </div>
 
 
 
-<form on:submit={handleSubmit}>
+<form class="mt-8" on:submit={handleSubmit}>
   <div class='mb-6'>
     <label for="question-input" class="block mb-2">Deja aquí tu pregunta</label>
     <Input required id='question-input' type='email' placeholder='¿De qué trata este documento?'>
