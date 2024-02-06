@@ -6,5 +6,7 @@ export const POST: APIRoute = async({ request }) => {
 
   console.log(file)
 
+  await new Promise((resolve) => setTimeout(resolve, 3000)) // Simulating a deloy of 3s
+
   return new Response('Hello World!')
 }
