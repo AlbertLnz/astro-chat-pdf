@@ -1,5 +1,5 @@
 <script>
-  import { setAppStatusLoading } from "../store";
+  import { setAppStatusError, setAppStatusLoading } from "../store";
   import Dropzone from "svelte-file-dropzone";
 
   let files = {
@@ -7,7 +7,7 @@
     rejected: []
   };
 
-  function handleFilesSelect(e) {
+  async function handleFilesSelect(e) {
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = [...files.accepted, ...acceptedFiles];
     files.rejected = [...files.rejected, ...fileRejections];
@@ -16,6 +16,19 @@
       setAppStatusLoading()
       const formData = new FormData()
       formData.append('file', acceptedFiles[0])
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+
+      if(!res.ok) {
+        setAppStatusError()
+        return
+      }
+
+      const result = await res.json()
+      setAppStatusChatMode(result)
     }
   }
 </script>
