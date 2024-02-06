@@ -1,9 +1,10 @@
 <script>
-  import { Input } from 'flowbite-svelte'
-  import { appStatusInfo } from '../store'
+  import { Input, Spinner } from 'flowbite-svelte'
+  import { appStatusInfo, setAppStatusError } from '../store'
   const { url, pages, id } = $appStatusInfo
 
   let loading = false
+  let answer = ''
 
   const numOfImagesToShow = Math.min(pages, 4) // max 4 images
   const images = Array.from({ length: numOfImagesToShow }, (_, i) => {
@@ -13,8 +14,41 @@
       .replace('.pdf', '.jpg')
   })
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    
+    loading = true
+    
+    const question = event.target.question.value
 
+    try {
+      const res = await fetch('/api/ask', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id,
+        question
+      })
+    })
+
+    if (!res.ok) {
+      loading = false
+      console.error('Error asking question')
+      return
+    }
+
+    } catch (error) {
+      setAppStatusError()
+      
+    } finally {
+      loading = false
+    }
+
+    const { answer: apiAnswer } = await res.json()
+    answer = apiAnswer // Svelte automatically detects changes in variables and updates their values quickly w/o requiring any hooks (even between components). So cool!
+    loading = false
   }
 
 </script>
@@ -29,9 +63,23 @@
 
 <form class="mt-8" on:submit={handleSubmit}>
   <div class='mb-6'>
-    <label for="question-input" class="block mb-2">Deja aquí tu pregunta</label>
-    <Input required id='question-input' type='email' placeholder='¿De qué trata este documento?'>
+    <label for="question" class="block mb-2">Deja aquí tu pregunta</label>
+    <Input required id='question' type='email' placeholder='¿De qué trata este documento?'>
       
     </Input>
   </div>
 </form>
+
+{#if loading}
+  <div class="flex flex-col justify-center items-center gap-y-2">
+    <Spinner />
+    <p class="opacity-75">Esperando la respuesta...</p>
+  </div>
+{/if}
+
+{#if answer}
+  <div class="mt-8">
+    <p class="font-medium">Respuesta:</p>
+    <p>{answer}</p>
+  </div>
+{/if}
