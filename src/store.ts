@@ -17,6 +17,6 @@ export const setAppStatusError = () => {
   appStatus.set(APP_STATUS.ERROR)
 }
 
-export const setAppStatusChatMode = (response: any) => {
+export const setAppStatusChatMode = ({ id, url, pages }: {id: string, url: string, pages: number}) => {
   appStatus.set(APP_STATUS.CHAT_MODE)
 }
