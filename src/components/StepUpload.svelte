@@ -1,5 +1,5 @@
 <script>
-  import { appStatus } from "../store";
+  import { appStatus, APP_STATUS } from "../store";
   import Dropzone from "svelte-file-dropzone";
 
   let files = {
@@ -11,6 +11,10 @@
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = [...files.accepted, ...acceptedFiles];
     files.rejected = [...files.rejected, ...fileRejections];
+
+    if (acceptedFiles.length > 0) {
+      appStatus.set(APP_STATUS.LOADING)
+    }
   }
 </script>
 
