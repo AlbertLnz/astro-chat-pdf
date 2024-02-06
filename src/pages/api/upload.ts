@@ -32,7 +32,7 @@ export const POST: APIRoute = async({ request }) => {
     folder: 'pdf'
   })
 
-  const { asset_id, url, pages } = result
+  const { asset_id: id, url, pages } = result
 
   // console.log(result)
   // await new Promise((resolve) => setTimeout(resolve, 3000)) // Simulating a deloy of 3s

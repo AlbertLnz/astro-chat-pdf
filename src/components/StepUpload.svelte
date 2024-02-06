@@ -1,5 +1,5 @@
 <script>
-  import { setAppStatusError, setAppStatusLoading } from "../store";
+  import { setAppStatusError, setAppStatusLoading, setAppStatusChatMode } from "../store";
   import Dropzone from "svelte-file-dropzone";
 
   let files = {
