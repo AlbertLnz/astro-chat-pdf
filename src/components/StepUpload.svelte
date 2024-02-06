@@ -14,6 +14,8 @@
 
     if (acceptedFiles.length > 0) {
       setAppStatusLoading()
+      const formData = new FormData()
+      formData.append('file', acceptedFiles[0])
     }
   }
 </script>
