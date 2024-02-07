@@ -21,16 +21,16 @@
     
     const question = event.target.question.value
 
+    const searchParams = new URLSearchParams()
+    searchParams.append('id', id)
+    searchParams.append('question', question)
+
     try {
-      const res = await fetch('/api/ask', {
-      method: 'POST',
+      const res = await fetch(`/api/ask?${searchParams.toString()}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id,
-        question
-      })
+      }
     })
 
     if (!res.ok) {
@@ -41,14 +41,13 @@
 
     } catch (error) {
       setAppStatusError()
-      
+
     } finally {
       loading = false
     }
 
-    const { answer: apiAnswer } = await res.json()
-    answer = apiAnswer // Svelte automatically detects changes in variables and updates their values quickly w/o requiring any hooks (even between components). So cool!
-    loading = false
+    const { response } = await res.json()
+    answer = response // Svelte automatically detects changes in variables and updates their values quickly w/o requiring any hooks (even between components). So cool!
   }
 
 </script>
@@ -71,7 +70,7 @@
 </form>
 
 {#if loading}
-  <div class="flex flex-col justify-center items-center gap-y-2">
+  <div class="flex flex-col mt-8 justify-center items-center gap-y-2">
     <Spinner />
     <p class="opacity-75">Esperando la respuesta...</p>
   </div>
